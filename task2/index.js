@@ -10,7 +10,7 @@
 		var radius = 25;
         var s = 50; //square edge
         var container = { x: 0, y: 0, width: 900, height: 700 };
-        var Number_of_ball=getRandomInt(1,15);
+        var Number_of_ball=getRandomInt(1,20);
         
 
         function check_balls_collision(balls,ball){
@@ -27,7 +27,7 @@
         }
 
         
-        function produce_number_of_ball(ball_count){
+        function produce_number_of_balls(ball_count){
         	var balls=[];
         	while(balls.length<ball_count){
         		var ball={ x: getRandX(), y: getRandY(), r: radius, color: getRandomInt(30,330), vx: getRandVel(), vy: getRandVel() };
@@ -39,7 +39,7 @@
         }
 
 
-        var circles=produce_number_of_ball(Number_of_ball);
+        var circles=produce_number_of_balls(Number_of_ball);
         var count = circles.length;
 
         function getRandVel (){
