@@ -66,21 +66,15 @@ app.directive('tweetView',function($window,$httpParamSerializer,$location){
 
 
 			$scope.gotosearch=function(){
-				debugger;
-				
 				var locationobj=$location.search();
 				locationobj.page="search";
 				var url='twitter.html?'+$httpParamSerializer(locationobj);
-				debugger;
 				$scope.tweetView();
 				$location.url(url);
 				
 			}
-
-
-
+			
 			$scope.tweetView=function(){
-				debugger;
 				if($location.search().page!="search"){
 					$scope.myTemplate="./views/tweet.html";
 				}
@@ -89,9 +83,7 @@ app.directive('tweetView',function($window,$httpParamSerializer,$location){
 				}	
 			}
 
-
 			$scope.tweetView();
-			
 			$scope.submit=function(tweet){
 				if(tweet!=undefined && tweet.length>0){
 					$scope.$emit("push_tweet",tweet);
