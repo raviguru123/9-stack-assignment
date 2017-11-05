@@ -1,16 +1,11 @@
 (function () {
-
-
-
-
-	function init() {
-
-		var canvas = document.getElementsByTagName('canvas')[0];
-		var c = canvas.getContext('2d');
-		var radius = 25;
-        var s = 50; //square edge
+    function init() {
+        var canvas = document.getElementsByTagName('canvas')[0];
+        var c = canvas.getContext('2d');
+        var radius = 25;
+        var s = 100; //square edge
         var container = { x: 0, y: 0, width: 900, height: 700 };
-        var Number_of_ball=getRandomInt(1,20);
+        var Number_of_ball=getRandomInt(1,10);
         
 
         function check_balls_collision(balls,ball){
@@ -72,7 +67,7 @@
             //scoreText = score1 + ":" + score2;
             scoreText = count.toString();
             c.beginPath();
-            c.rect(canvas.width / 2 -25, canvas.height / 2 -25, 50, 50);
+            c.rect(canvas.width / 2 -s/2, canvas.height / 2 -s/2, s, s);
             c.strokeStyle = '#3c3c3c';
             c.stroke();
             c.font = 'bold 20pt Open Sans';
@@ -102,7 +97,7 @@
 
                 //check if the ball has hit the square
 
-                var s = 50; //score square edge
+                
 
                 if (circles[i].x + circles[i].r >= canvas.width / 2 - s / 2 && circles[i].x - circles[i].r <= canvas.width / 2 + s / 2
                 	&& circles[i].y + circles[i].r >= canvas.height / 2 - s / 2 && circles[i].y - circles[i].r <= canvas.height / 2 + s / 2){
