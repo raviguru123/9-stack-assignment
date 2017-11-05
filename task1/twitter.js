@@ -61,10 +61,14 @@ app.directive('tweetView',function($window,$httpParamSerializer,$location){
 		restrict:'EA',
 		replace:true,
 		scope:false,
+		template:`<form name="tweet" ng-show="myTemplate">
+		<input ng-model="tweetobj.tweettxt" type="text"/>
+		<button  type="submit" ng-click="submit(tweetobj.tweettxt,tweet.$valid)">Submit</button>
+		<button ng-click="gotosearch()">Go to Search</button>
+		</form>`,
 		link: function($scope, iElm, iAttrs, controller) {
 			$scope.tweetobj={};
-
-
+			
 			$scope.gotosearch=function(){
 				var locationobj=$location.search();
 				locationobj.page="search";
@@ -76,14 +80,19 @@ app.directive('tweetView',function($window,$httpParamSerializer,$location){
 			
 			$scope.tweetView=function(){
 				if($location.search().page!="search"){
-					$scope.myTemplate="./views/tweet.html";
+					$scope.myTemplate=true;
 				}
 				else{
-					$scope.myTemplate="";
+					$scope.myTemplate=false;
 				}	
 			}
 
+			$scope.$watch(function(){ return $location.search() }, function(params){
+				$scope.tweetView();
+			});
+
 			$scope.tweetView();
+			
 			$scope.submit=function(tweet){
 				if(tweet!=undefined && tweet.length>0){
 					$scope.$emit("push_tweet",tweet);
@@ -91,8 +100,8 @@ app.directive('tweetView',function($window,$httpParamSerializer,$location){
 				}
 			}
 
-		},
-		template:'<div ng-include="myTemplate"></div>'
+		}
+		// template:'<div ng-include="myTemplate"></div>'
 	};
 });
 
@@ -107,13 +116,24 @@ app.directive('searchView',function($window,$httpParamSerializer,$filter,$locati
 		restrict:'EA',
 		replace:true,
 		scope:false,
-		templateUrl:"./views/search.html",
+		template:`<div style="width: 100%;margin-top:50px">
+		<form ng-if="localParam.page=='search'" name="searchtweet">
+		<input ng-model="searchObj.searchtxt" type="text"/>
+		<button  type="submit" ng-click="search(searchObj.searchtxt)">Search</button></form>
+		<ul><li ng-repeat="tweet in tweets track by $index">#Tweet{{tweets.length-$index+1}} # {{tweet.value}}</li></ul>
+		</div>
+		`,
 		link: function($scope, iElm, iAttrs, controller) {
 			$scope.searchObj={};
 
 			$scope.$on("reset_all_tweets",function(){
 				$scope.init();
 			});
+
+			$scope.$watch(function(){ return $location.search() }, function(params){
+				$scope.init();
+			});
+
 
 			$scope.search=function(searchtext){
 				var locationobj=$location.search();
@@ -125,6 +145,7 @@ app.directive('searchView',function($window,$httpParamSerializer,$filter,$locati
 				$scope.init();
 			}
 
+			
 			$scope.init=function(){
 				let tweets=$window.localStorage.getItem("tweets");
 				$scope.localParam=$location.search();
@@ -159,3 +180,5 @@ app.directive('searchView',function($window,$httpParamSerializer,$filter,$locati
 		}
 	};
 });
+
+
